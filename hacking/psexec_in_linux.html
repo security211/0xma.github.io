@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PsExec in Linux</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to connect remotely to a Windows machine from a Linux box using Impacket's PsExec.">
+        <meta name="keywords" content="kali, linux, kali linux, psexec, linux, windows, remote connection, impacket, impacket-psexec">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">March 19, 2021</p>
+                <h1 class="heading">PsExec in Linux</h1>
+                <p>In this tutorial we will see how to run PsExec in Linux to connect to a Windows machine and execute processes. We will be using the psexec.py and the psexec module of Metasploit in this example. This tool can be used by system administrators as well as viruses.</p>
+                <p>PsExec is a light-weight telnet-replacement that lets you execute processes on other systems, complete with full interactivity for console applications, without having to manually install client software. PsExec's most powerful uses include launching interactive command-prompts on remote systems and remote-enabling tools like IpConfig that otherwise do not have the ability to show information about remote systems.</p>
+                <p>The psexec module can be used by hackers or penetration testers to gain access to a system. PsExec allows us to connect to a remote system using password hashes as well. These hashes can be extracted using meterpreter or some other tools like fgdump, pwdump and cachedump.</p>
+                <p>The PowerShell module for PsExec is "/exploit/windows/smb/psexec". In order to connect to a remote system, all we have to do is specify the RHOST (<span class="command">set RHOST 10.10.10.100</span>), SMBUSER (<span class="command">set SMBUSER administrator</span>) and SMBPASS (<span class="command">set SMBPASS Ticketmaster1968</span>). <span class="command">exploit</span> can be used to execute the module.</p>
+                <img src="../img/psexec_in_linux/001.png" alt="exploit/windows/smb/psexec module in Metasploit.">
+                <br>
+                <br>
+                <p>Once the module is executed, we can run regular Windows or meterpreter commands on the remote box.</p>
+                <img src="../img/psexec_in_linux/002.png" alt="Browse the filesystem with meterpreter.">
+                <br>
+                <br>
+                <p>Next, let's use Impacket's psexec.py to connect to a remote system. The <span class="command">locate</span> command can be used to find all the instances of psexec.py on the system.</p>
+                <img src="../img/psexec_in_linux/003.png" alt="Location of psexec.py on the local filesystem.">
+                <br>
+                <br>
+                <p>This is the full command to connect to a remote system is <span class="command">python /usr/share/doc/python-impacket/examples/psexec.py active.htb/administrator:Ticketmaster1968@10.10.10.100</span>. Please note that if the image is too small then please open it in a new tab.</p>
+                <img src="../img/psexec_in_linux/004.png" alt="Remote shell access via Impacket's psexec.py.">
+                <br>
+                <br>
+                <p>Once the command is exected, we get shell access to the remote Windows box.</p>
+                <img src="../img/psexec_in_linux/005.png" alt="Shell access via Impacket's psexec.py.">
+                <br>
+                <br>
+                <p>This shows us that we can browse the remote file system as if we are on a local terminal connected to the remote box.</p>
+                <img src="../img/psexec_in_linux/006.png" alt="Browse filesystem via psexec.py.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

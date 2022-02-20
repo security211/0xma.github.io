@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reverse Shell in WordPress via Theme Edit Feature</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to modify a template within a theme in WordPress to gain a reverse shell.">
+        <meta name="keywords" content="kali, linux, kali linux, wordpress, edit theme, edit template, netcat reverse connection, php, php reverse shell">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">August 13, 2021</p>
+                <h1 class="heading">Reverse Shell in WordPress via Theme (Template) Edit Feature</h1>
+                <p>In this tutorial we will see how to get a reverse shell on a WordPress server by editing a theme. The assumption is that we already have administrative access to the WordPress server which allows us to edit a template.</p>
+                <p>Let's login to the WordPress server.</p>
+                <img src="../img/wordpress_theme_edit/001.png" alt="Login to WordPress.">
+                <br>
+                <br>
+                <p>Upon a successful login, we will see the Dashboard page.</p>
+                <img src="../img/wordpress_theme_edit/002.png" alt="WordPress dashboard.">
+                <br>
+                <br>
+                <p>On the sidebar, hover your mouse over "Appearance" and then click on "Editor".</p>
+                <img src="../img/wordpress_theme_edit/003.png" alt="Open the theme editor.">
+                <br>
+                <br>
+                <p>From the drop-down list on the top-right corner, select a theme to edit which in this case is the "Twenty Seventeen" theme and then click on a template to edit which in this case is the 404 Template (404.php).</p>
+                <img src="../img/wordpress_theme_edit/004.png" alt="Open the 404.php template file in the Twenty Seventeen theme.">
+                <br>
+                <br>
+                <p>Now we need a PHP reverse shell to insert into the template code. So, let's copy a PHP reverse shell that comes in Kali Linux to our working directory (this step is not really necessary).</p>
+                <img src="../img/wordpress_theme_edit/005.png" alt="Copy the PHP reverse shell file to the current working directory.">
+                <br>
+                <br>
+                <p>We modify the PHP reverse shell by entering our own IP address and the port on which we will be listening.</p>
+                <img src="../img/wordpress_theme_edit/006.png" alt="Modify the PHP reverse shell file.">
+                <br>
+                <br>
+                <p>After copying the PHP reverse shell, we paste it into the template file.</p>
+                <img src="../img/wordpress_theme_edit/007.png" alt="Paste the PHP reverse shell into the template file.">
+                <br>
+                <br>
+                <p>And then we click on "Update File".</p>
+                <img src="../img/wordpress_theme_edit/008.png" alt="Update the template file.">
+                <br>
+                <br>
+                <p>WordPress displays the message that says "File edited successfully.".</p>
+                <img src="../img/wordpress_theme_edit/009.png" alt="template edited successfully.">
+                <br>
+                <br>
+                <p>Now that the template file contains our PHP reverse shell code, we can run the reverse shell by browsing the template file via a browser such as Firefox, Chrome, etc. or we can also trigger the reverse shell by using wget.</p>
+                <img src="../img/wordpress_theme_edit/010.png" alt="curl command to trigger the template file.">
+                <br>
+                <br>
+                <p>Please note that we have to have a listener running before we trigger the reverse shell in the previous step. Running <span class="command">nc -lvnp 1234</span> creates a listener and when we trigger the reverse shell code, we receive a connection from the target. Now we have access to the WordPress server with the privileges of "www-data".</p>
+                <img src="../img/wordpress_theme_edit/011.png" alt="netcat (nc) reverse shell connection.">                
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

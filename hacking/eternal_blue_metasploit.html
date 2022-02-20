@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Eternal Blue Exploitation with Metasploit</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to run the Eternal Blue module of Metasploit to gain remote access to a target.">
+        <meta name="keywords" content="kali, linux, kali linux, eternal blue, metasploit framework, metasploit, msfconsole, exploit, remote code execution, rce, /exploit/windows/smb/ms17_010_eternalblue">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">March 26, 2021</p>
+                <h1 class="heading">Eternal Blue Exploitation with Metasploit</h1>
+                <p>In this tutorial we will see how to gain access to a remote computer using the EternalBlue exploit. EternalBlue exploits a vulnerability in Microsoft's implementation of the Server Message Block (SMB) protocol. This vulnerability is denoted by CVE-2017-0144. The vulnerability exists because the SMB version 1 (SMBv1) server in various versions of Microsoft Windows mishandles specially crafted packets from remote attackers, allowing them to execute arbitrary code on the target computer.</p>
+                <p>Nmap has some very useful scripts that can be used to check if the target computer is vulnerable to a particular exploit. This shows the available Nmap scripts that can be used to see if the target is vulnerable to these exploits.</p>
+                <img src="../img/eternal_blue_metasploit/001.png" alt="Nmap scripts related to vulnerable SMB versions." title="Nmap scripts related to vulnerable SMB versions.">
+                <br>
+                <br>
+                <p>This script shows that the target is vulnerable to the EternalBlue exploit.</p>
+                <img src="../img/eternal_blue_metasploit/002.png" alt="smb-vuln-ms17-010 nmap script." title="smb-vuln-ms17-010 nmap script.">
+                <br>
+                <br>
+                <p>Now that we have identified that the target is vulnerable to the EternalBlue exploit, we can use Metasploit to gain system level access to the box. The Metasploit module for the EternalBlue exploit is "/exploit/windows/smb/ms17_010_eternalblue". All we have to do is set the remote host with <span class="command">set RHOST 10.10.10.40</span>.</p>
+                <img src="../img/eternal_blue_metasploit/003.png" alt="Metasploit's exploit/windows/smb/ms17_010_eternalblue module." title="Metasploit's exploit/windows/smb/ms17_010_eternalblue module.">
+                <br>
+                <br>
+                <p>The <span class="command">show options</span> command shows the available options for this module.</p>
+                <img src="../img/eternal_blue_metasploit/004.png" alt="'show options' command on Metasploit's 'exploit/windows/smb/ms17_010_eternalblue'. module" title="'show options' command on Metasploit's 'exploit/windows/smb/ms17_010_eternalblue'. module">
+                <br>
+                <br>
+                <p>Run <span class="command">exploit</span> to execute the module.</p>
+                <img src="../img/eternal_blue_metasploit/005.png" alt="'exploit' command on Metasploit's 'exploit/windows/smb/ms17_010_eternalblue' module." title="'exploit' command on Metasploit's 'exploit/windows/smb/ms17_010_eternalblue' module.">
+                <br>
+                <br>
+                <p>This shows that we have system level privileges to the box.</p>
+                <img src="../img/eternal_blue_metasploit/006.png" alt="System privileges on the target box." title="System privileges on the target box.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

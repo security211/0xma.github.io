@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>XXE Injection</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to inject XML code to gain read access to files.">
+        <meta name="keywords" content="kali, linux, kali linux, nosql, xxe injection, xml injection, xml external entity, injection">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">February 20, 2022</p>
+                <h1 class="heading">XXE Injection</h1>
+                <p>In this tutorial we will see how to perform an XXE (XML External Entity) injection. The web application in this example accepts a form that is in a XML format. Using XXE injection, we can fetch any content we want from the server.</p>
+                <p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XXE%20Injection#exploiting-xxe-to-retrieve-files">This</a> GitHub page contains some good XXE injection techniques.</p>
+                <img src="../img/xxe_injection/002.png" alt="XXE Injection GitHub page." title="XXE Injection GitHub page.">
+                <img src="../img/xxe_injection/003.png" alt="XXE Injection GitHub page." title="XXE Injection GitHub page.">
+                <img src="../img/xxe_injection/004.png" alt="XXE Injection GitHub page." title="XXE Injection GitHub page.">
+                <br>
+                <br>
+                <p>Let's click on "New Article" to create a new article.</p>
+                <img src="../img/xxe_injection/005.png" alt="Blog page with a link to create a new article." title="Blog page with a link to create a new article.">
+                <br>
+                <br>
+                <p>Fill in some data for the title, description and markdown.</p>
+                <img src="../img/xxe_injection/007.png" alt="Creation of a new article." title="Creation of a new article.">
+                <br>
+                <br>
+                <p>We can see our newly created article.</p>
+                <img src="../img/xxe_injection/008.png" alt="New article created." title="New article created.">
+                <br>
+                <br>
+                <p>Let's create a simple text file with some random content that we can upload to the website.</p>
+                <img src="../img/xxe_injection/009.png" alt="New text file with some content." title="New text file with some content.">
+                <br>
+                <br>
+                <p>Click on Upload.</p>
+                <img src="../img/xxe_injection/010.png" alt="Blog page with upload button." title="Blog page with upload button.">
+                <br>
+                <br>
+                <p>Select the newly created text file.</p>
+                <img src="../img/xxe_injection/011.png" alt="Select the text file." title="Select the text file.">
+                <br>
+                <br>
+                <p>This shows the captured file upload in Burp Intercept.</p>
+                <img src="../img/xxe_injection/012.png" alt="Capture the uploaded file in Burp Intercept." title="Capture the uploaded file in Burp Intercept.">
+                <br>
+                <br>
+                <p>Upon submission of the text file, we get an "Invalid" response. It tells us how the XML file should be formatted.</p>
+                <img src="../img/xxe_injection/013.png" alt="Invalid XML response." title="Invalid XML response.">
+                <br>
+                <br>
+                <p>We create a new XML file with the specified formatting.</p>
+                <img src="../img/xxe_injection/014.png" alt="Text file with XML content." title="Text file with XML content.">
+                <br>
+                <br>
+                <p>Select the newly created XML file to be uploaded.</p>
+                <img src="../img/xxe_injection/015.png" alt="Upload the XML file." title="Upload the XML file.">
+                <br>
+                <br>
+                <p>This shows the captured request in Burp Intercept.</p>
+                <img src="../img/xxe_injection/016.png" alt="Capture the XML file in Burp Intercept." title="Capture the XML file in Burp Intercept.">
+                <br>
+                <br>
+                <p>After the file is uploaded, we can see that this form is filled with the contents of our XML file.</p>
+                <img src="../img/xxe_injection/017.png" alt="File successfully uploaded." title="File successfully uploaded.">
+                <br>
+                <br>
+                <p>We can upload the XML file once again and capture the request in Burp Intercept. Upon the intercept, we can right-click on the request and send it to Burp Repeater.</p>
+                <img src="../img/xxe_injection/018.png" alt="Send the XML upload to Burp Repeater." title="Send the XML upload to Burp Repeater.">
+                <br>
+                <br>
+                <p>We modify our payload in Burp Repeater and send it to the server. We can see that our custom text "0xma.gitlab.io" is reflected back to us. This indicates that the server is vulnerable to XXE injection.</p>
+                <img src="../img/xxe_injection/019.png" alt="XXE injection to echo some random data." title="XXE injection to echo some random data.">
+                <br>
+                <br>
+                <p>Now that we know that the web application is vulnerable to XXE injection, we can try a new payload that reads the contents of the /etc/passwd file.</p>
+                <img src="../img/xxe_injection/020.png" alt="Read the /etc/passwd file via XXE injection." title="Read the /etc/passwd file via XXE injection.">
+                <br>
+                <br>
+                <p>Instead of working with Burp Repeater, we can also create a XML file with a XXE injection payload.</p>
+                <img src="../img/xxe_injection/021.png" alt="XML file with XXE injection to read the /etc/passwd file." title="XML file with XXE injection to read the /etc/passwd file.">
+                <br>
+                <br>
+                <p>Select the new XML file to be uploaded.</p>
+                <img src="../img/xxe_injection/022.png" alt="Select the new XML file with the XXE injection." title="Select the new XML file with the XXE injection.">
+                <br>
+                <br>
+                <p>This shows the captured request in Burp Intercept. It shows the contents of the file with the XXE injection that we want to upload.</p>
+                <img src="../img/xxe_injection/023.png" alt="Capture of the XML file in Burp Intercept." title="Capture of the XML file in Burp Intercept.">
+                <br>
+                <br>
+                <p>We get the contents of the /etc/passwd file in the "Markdown" section of the form because this is where we had injected our payload.</p>
+                <img src="../img/xxe_injection/024.png" alt="Content of the /etc/passwd file is displayed." title="Content of the /etc/passwd file is displayed.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

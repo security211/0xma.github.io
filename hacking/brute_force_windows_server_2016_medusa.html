@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bruteforce Windows Server SMB Credentials with Medusa</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to brute SMB users using medusa.">
+        <meta name="keywords" content="kali, linux, kali linux, brute force domain, brute force smb, brute force users, smb, smb hacking, hacking">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">May 28, 2021</p>
+                <h1 class="heading">Bruteforce Windows Server SMB Credentials with Medusa</h1>
+                <p>In this tutorial we will see how to bruteforce SMB credentials using a username and password list. This can help us identify users that use common passwords which would make our organization vulnerable to attacks.</p>
+                <p>Running an nmap scan on the target shows the open ports. We can see that Kerberos (TCP port 88), MSRPC (TCP port 135), NetBIOS-SSN (TCP port 139) and SMB (TCP port 445) are open. This is a good indicator that the target is probably running an Active Directory environment.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/01.png" alt="nmap scan displays the open ports on the target.">
+                <br>
+                <br>
+                <p>This is our userlist which contains six usernames.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/02.png" alt="The user list to be bruteforced.">
+                <br>
+                <br>
+                <p>And this is our password list which contains six passwords.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/03.png" alt="The password list to be bruteforced.">
+                <br>
+                <br>
+                <p>It shows the available options that can be used with medusa.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/04.png" alt="medusa options available.">
+                <img src="../img/brute_force_windows_server_2016_medusa/05.png" alt="medusa options available.">
+                <br>
+                <br>
+                <p>We use the <span class="command">-U userlist.txt</span> option to specify the file containing the usernames. The <span class="command">-P passlist.txt</span> option specifies the file containing the passwords. The <span class="command">-h 192.168.43.105</span> option is used to identify the target box. And lastly, the <span class="command">-M smbnt</span> option specifies the protocol which in this case is SMB. First, it tries all the passwords for the admin user.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/06.png" alt="medusa with userlist and password list.">
+                <br>
+                <br>
+                <p>Next, it tries the passwords for the Administrator.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/07.png" alt="medusa with userlist and password list.">
+                <br>
+                <br>
+                <p>Then it tries the passwords for tstark and finds the password.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/08.png" alt="medusa with userlist and password list.">
+                <br>
+                <br>
+                <p>After that it tries the passwords for pparker and finds the password.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/09.png" alt="medusa with userlist and password list.">
+                <br>
+                <br>
+                <p>When it comes to srogers, it again tries the passwords in order and finds that NewYork@1 is the valid password.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/10.png" alt="medusa with userlist and password list.">
+                <br>
+                <br>
+                <p>We can use a password list to bruteforce against a single user. In this case, it found the password for tstark which is LosAngeles@2.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/11.png" alt="medusa with username and password list.">
+                <br>
+                <br>
+                <p>We can also brute force a bunch of users against a single password. In this case we can see that the srogers user has the NewYork@1 password.</p>
+                <img src="../img/brute_force_windows_server_2016_medusa/14.png" alt="medusa with userlist and a password.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>

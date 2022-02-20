@@ -1,0 +1,5 @@
+Important Link Related to Protecting Your Profile
+https://support.mozilla.org/en-US/kb/use-primary-password-protect-stored-logins
+
+Firefox Decrypt Tutorial
+https://opensourcelibs.com/lib/firefox_decrypt

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reading Outlook Files in Terminal</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to read Outlook files in a terminal on a Linux box.">
+        <meta name="keywords" content="kali, linux, kali linux, read outlook files, read pst files, read mbox files, terminal, linux, outlook in linux">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">February 26, 2021</p>
+                <h1 class="heading">Reading Outlook Files in Terminal</h1>
+                <p>In this tutorial we will see how to open .pst files in a inux terminal. There are accounts, such as POP accounts, that store information in Outlook Data Files (.pst files) on the local computer. And .mbox files contain organized email messages in a single file. And it saves messages one after another in a single file.</p>
+                <h4><a href="https://support.microsoft.com/en-us/office/introduction-to-outlook-data-files-pst-and-ost-222eaf92-a995-45d9-bde2-f331f60e2790">According to Microsoft documentation:</a></h4>
+                <p class="quote">When you add an email account to Outlook, a local copy of your information is stored on your computer. This feature allows you to access your previously downloaded or synchronized email messages, calendar information, contacts, and tasks without an internet connection.</p>
+                <p class="quote">Certain types of accounts, such as POP accounts, store their information in Outlook Data Files (.pst files). Outlook 365 accounts, Exchange accounts, IMAP accounts, and Outlook.com accounts store their information in Offline Outlook Data Files (.ost files).</p>
+                <h4><a href="https://fileinfo.com/extension/mbox">According to fileinfo:</a></h4>
+                <p class="quote">An MBOX file is an email mailbox saved in a mail storage format used for organizing email messages in a single text file. It saves messages in a concatenated format where each message is stored after another, starting with the "From" header. MBOX files were originally used by Unix hosts but are now supported by other email applications, including Apple Mail and Mozilla Thunderbird.</p>
+                <p>So, we have a .pst file called Access Control.pst. Its size is 265K. Running the file command on this file shows that it is a "Microsoft Outlook email folder (>=2003)".</p>
+                <img src="../img/reading_outlook_pst_files/001.png" alt="The .pst file in the local box.">
+                <br>
+                <br>
+                <p>Next, we use readpst to extract the contents of the .pst file. If not installed on the system, then it can be installed by running <span class="command">apt-get install readpst</span>. Once we run this command, it shows that it has another file inside it called "Access Control.mbox".</p>
+                <img src="../img/reading_outlook_pst_files/002.png" alt="Read the .pst file with readpst.">
+                <br>
+                <br>
+                <p>We can open this .mbox file with less or cat. For this example, I am using less to open the file as it can be a large file and it is easier to read it with less.</p>
+                <img src="../img/reading_outlook_pst_files/003.png" alt="View the .mbox file with less.">
+                <br>
+                <br>
+                <p>This shows the contents of the .mbox file. This is an email sent from john@megacorp.com to security@accesscontrolsystems.com. It shows some header information and the body of the email message as well.</p>
+                <img src="../img/reading_outlook_pst_files/004.png" alt="Contents of the .pst file.">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div class="right_margin">
+                <div id="right_margin_widget">
+                    <div class="widget_title">Related Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                    </ul>
+                </div>
+                <div id="right_margin_widget">
+                    <div class="widget_title">Latest Tutorials</div>
+                    <hr>
+                    <ul class="remove_bullet_points">
+                        <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                        <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>
