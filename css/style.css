@@ -132,7 +132,7 @@ a {
 
 #right_margin_widget {
     border: 1px solid #D3CFD1;
-    margin: 50px 25px 100px 50px;
+    margin: 50px 25px 25px 50px;
     padding: 20px;
     font-family: Lato;
     background-color: white;
@@ -161,7 +161,6 @@ a {
     color: #DD3333;
     font-weight: 600;
     text-transform: uppercase;
-    /* text-align: left; */
     padding-left: 40px;
 }
 
