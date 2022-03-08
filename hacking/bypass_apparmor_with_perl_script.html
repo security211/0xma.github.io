@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Read Targets from a File</title>
+        <title>Bypass AppArmor with Perl Script</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,8 +10,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../css/style.css">
-        <meta name="description" content="">
-        <meta name="keywords" content="">
+        <meta name="description" content="This tutorial demonstrates how to bypass AppArmor with a simple Perl script.">
+        <meta name="keywords" content="kali linux, kali, linux, apparmor bypass perl script, bypass apparmor, perl script">
         <meta name="author" content="0xma">
     </head>
     <body>
@@ -37,16 +37,39 @@
         <div class="container">
             <div class="left_empty_space"></div>
             <div class="center">
-                <p class="date">August 3, 2021</p>
-                <h1 class="heading">Read Targets from a File</h1>
-                <p></p>
-                <p></p>
-                <img src="../img/reading_targets_from_a_file/001.png" alt="">
-                <img src="../img/reading_targets_from_a_file/002.png" alt="">
-                <img src="../img/reading_targets_from_a_file/003.png" alt="">
-                <img src="../img/reading_targets_from_a_file/004.png" alt="">
-                <img src="../img/reading_targets_from_a_file/005.png" alt="">
-                <img src="../img/reading_targets_from_a_file/006.png" alt="">
+                <p class="date">March 02, 2022</p>
+                <h1 class="heading">Bypass AppArmor with Perl Script</h1>
+                <p>In this tutorial, we will see how to bypass AppArmor using a Perl script. AppArmor is a Linux kernel security module that allows the system administrator to restrict programs' capabilities with per-program profiles. <a href="https://bugs.launchpad.net/apparmor/+bug/1911431">This</a> and <a href="https://gtfobins.github.io/gtfobins/perl/#capabilities">this</a> page contains more information about this vulnerability and its exploit.</p>
+                <p> We can see that Perl has the SetUID capability set. And we will be using this capability to bypass AppArmor.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/001.png" alt="View the capabilities of perl." title="View the capabilities of perl.">
+                <br>
+                <br>
+                <p>Using this command from <a href="https://gtfobins.github.io/gtfobins/perl/#capabilities">GTFOBins</a>, we can see that we have root level privileges.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/002.png" alt="Execute the id and whoami commands." title="Execute the id and whoami commands.">
+                <br>
+                <br>
+                <p>However, when we try to run <span class="command">/bin/sh</span>, we are not able to get a shell as the root user.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/003.png" alt="Try to gain a root shell." title="Try to gain a root shell.">
+                <br>
+                <br>
+                <p>Let's create a simple Perl script and execute it to see if we can get a shell as the root user.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/004.png" alt="Perl script to gain root shell." title="Perl script to gain root shell.">
+                <br>
+                <br>
+                <p>Unfortunately, running the script with the <span class="command">perl</span> command results in a "Permission denied" message.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/005.png" alt="Script denied permission error." title="Script denied permission error.">
+                <br>
+                <br>
+                <p>This shows the configuration of AppArmor for <span class="command">/usr/bin/perl</span>.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/006.png" alt="AppArmor configuration for Perl." title="AppArmor configuration for Perl.">
+                <br>
+                <br>
+                <p>Let's change the permissions of our Perl script and make sure that it is executable. Having the script as executable allows us to run the script without specifying <span class="command">perl</span> before the name of the script. This is because once we set the executable bit on the script, the script will be executed with whatever we have specified in the first line of the script.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/007.png" alt="Make the exploit executable." title="Make the exploit executable.">
+                <br>
+                <br>
+                <p>Executing the script directly allows us to get a root shell.</p>
+                <img src="../img/bypass_apparmor_with_perl_script/008.png" alt="Execute the script to gain root shell." title="Execute the script to gain root shell.">
                 <br>
                 <br>
                 <br>

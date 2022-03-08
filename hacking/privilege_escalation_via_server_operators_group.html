@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Read Targets from a File</title>
+        <title>Privilege Escalation via Server Operators Group</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,8 +10,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../css/style.css">
-        <meta name="description" content="">
-        <meta name="keywords" content="">
+        <meta name="description" content="This tutorial demonstrates how to capture LDAP credentials.">
+        <meta name="keywords" content="kali linux, kali, linux, privilege escalation server operators group, privilege escalation, servers operators group">
         <meta name="author" content="0xma">
     </head>
     <body>
@@ -37,16 +37,27 @@
         <div class="container">
             <div class="left_empty_space"></div>
             <div class="center">
-                <p class="date">August 3, 2021</p>
-                <h1 class="heading">Read Targets from a File</h1>
-                <p></p>
-                <p></p>
-                <img src="../img/reading_targets_from_a_file/001.png" alt="">
-                <img src="../img/reading_targets_from_a_file/002.png" alt="">
-                <img src="../img/reading_targets_from_a_file/003.png" alt="">
-                <img src="../img/reading_targets_from_a_file/004.png" alt="">
-                <img src="../img/reading_targets_from_a_file/005.png" alt="">
-                <img src="../img/reading_targets_from_a_file/006.png" alt="">
+                <p class="date">March 02, 2022</p>
+                <h1 class="heading">Privilege Escalation via Server Operators Group</h1>
+                <p>In this tutorial, we will see how to escalate our privileges from an account that is  a member of the  "Server Operators Group" so that we could gain "nt authority\system" level privileges. Members of this group can start and stop system services.</p>
+                <p>The <span class="command">net user svc-printer</span> command shows some information regarding the "svc-printer" account. We can see that it is part of the "Server Operators" group.</p>
+                <img src="../img/privilege_escalation_via_server_operators_group/001.png" alt="View group memberships of an account." title="View group memberships of an account.">
+                <br>
+                <br>
+                <p>We need to upload nc.exe (netcat) to the target box.</p>
+                <img src="../img/privilege_escalation_via_server_operators_group/002.png" alt="Upload netcat to the target." title="Upload netcat to the target.">
+                <br>
+                <br>
+                <p>Let's modify the binary path of "vss" and point it to a reverse netcat shell.</p>
+                <img src="../img/privilege_escalation_via_server_operators_group/003.png" alt="Modify the vss service." title="Modify the vss service.">
+                <br>
+                <br>
+                <p>Now it is time to restart the "vss" service.</p>
+                <img src="../img/privilege_escalation_via_server_operators_group/004.png" alt="Restarting the vss service." title="Restarting the vss service.">
+                <br>
+                <br>
+                <p>Once the "vss" service is started, we can catch the reverse shell in a netcat listener on our own box.</p>
+                <img src="../img/privilege_escalation_via_server_operators_group/005.png" alt="Administrator privileges on the box." title="Administrator privileges on the box.">
                 <br>
                 <br>
                 <br>
