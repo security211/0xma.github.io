@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server Side Template Injection (SSTI)</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to gain remote code execution via Server Side Template Injection (SSTI).">
+        <meta name="keywords" content="kali, linux, kali linux, template injection, remote code execution">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">March 2, 2022</p>
+                <h1 class="heading">Server Side Template Injection (SSTI) - Example 1</h1>
+                <p>In this tutorial, we will see how to exploit SSTI (Server-Side Template Injection) vulnerability on the Nunjucks template engine and gain remote code execution. <a href="https://expressjs.com/en/resources/template-engines.html">This</a> and <a href="https://disse.cting.org/2016/08/02/2016-08-02-sandbox-break-out-nunjucks-template-engine">this</a> page contains more information about this vulnerability.</p>
+                <p>This is the main page of the web application that we will be hacking.</p>
+                <img src="../img/nunchucks_template_injection/001.png" alt="Main page of the web application." title="Main page of the web application.">
+                <br>
+                <br>
+                <p>If we send our web traffic through Burp Suite then we can see that the target server is running "nginx/1.18.0" on an Ubuntu box.</p>
+                <img src="../img/nunchucks_template_injection/002.png" alt="Server response header in Burp Suite." title="Server response header in Burp Suite.">
+                <br>
+                <br>
+                <p>Another way of getting information on the target server is by running the <span class="command">curl</span> tool. The <span class="command">--head</span> option retrieves the response headers from the web server. The <span class="command">-k</span> option "allows insecure server connections when using SSL".</p>
+                <img src="../img/nunchucks_template_injection/003.png" alt="Server response headers using curl." title="Server response headers using curl.">
+                <br>
+                <br>
+                <p>Let's enter a random email address in the input box to subscribe to the newsletter.</p>
+                <img src="../img/nunchucks_template_injection/004.png" alt="Sending email to the web application." title="Sending email to the web application.">
+                <br>
+                <br>
+                <p>We can see that the web application accepted our email address.</p>
+                <img src="../img/nunchucks_template_injection/005.png" alt="Server response after submitting an email address." title="Server response after submitting an email address.">
+                <br>
+                <br>
+                <p>Let's resend our request and capture it in Burp Intercept. Once the request is captured, we can right-click on it and send it to Burp Repeater.</p>
+                <img src="../img/nunchucks_template_injection/006.png" alt="Sending the email address to Burp Repeater." title="Sending the email address to Burp Repeater.">
+                <br>
+                <br>
+                <p>This is how a normal response looks like.</p>
+                <img src="../img/nunchucks_template_injection/007.png" alt="Valid response after submitting an email address through Burp Repeater." title="Valid response after submitting an email address through Burp Repeater.">
+                <br>
+                <br>
+                <p>We add "{{7*7}}" to the email address and see "49" in the response. This shows that injection is possible.</p>
+                <img src="../img/nunchucks_template_injection/008.png" alt="Injecting payload using Burp Repeater." title="Injecting payload using Burp Repeater.">
+                <br>
+                <br>
+                <p>Let's inject our payload that runs the <span class="command">id</span> command. We can see that the command is executed successfully and the output gets returned back to us in the response.</p>
+                <img src="../img/nunchucks_template_injection/009.png" alt="Running the id command via injection." title="Running the id command via injection.">
+                <br>
+                <br>
+                <p>We can also output the contents of a file. In this case, we can see the contents of the "/etc/passwd" file.</p>
+                <img src="../img/nunchucks_template_injection/010.png" alt="View the contents of the /etc/passwd file." title="View the contents of the /etc/passwd file.">
+                <br>
+                <br>
+                <p>This command generates SSH keys (a public and a private one).</p>
+                <img src="../img/nunchucks_template_injection/011.png" alt="Generate SSH keys." title="Generate SSH keys.">
+                <br>
+                <br>
+                <p>The one with the ".pub" extension is the public key which we will upload to the target server.</p>
+                <img src="../img/nunchucks_template_injection/012.png" alt="Public and private SSH keys on the local box." title="Public and private SSH keys on the local box.">
+                <br>
+                <br>
+                <p>We need to create a ".ssh" directory in the user's home directory which is "/home/david". We will be uploading the public key to this directory.</p>
+                <img src="../img/nunchucks_template_injection/013.png" alt="Create .ssh directory in the target box." title="Create .ssh directory in the target box.">
+                <br>
+                <br>
+                <p>This shows the contents of the public key.</p>
+                <img src="../img/nunchucks_template_injection/014.png" alt="Contents of the public key." title="Contents of the public key.">
+                <br>
+                <br>
+                <p>We are echoing the public key into a file called "authorized_keys" which is in the "/home/david/.ssh/" directory.</p>
+                <img src="../img/nunchucks_template_injection/015.png" alt="Send the public key to the .ssh directory." title="Send the public key to the .ssh directory.">
+                <br>
+                <br>
+                <p>We can see that the file was created successfully.</p>
+                <img src="../img/nunchucks_template_injection/016.png" alt="Confirm that the public key got created." title="Confirm that the public key got created.">
+                <br>
+                <br>
+                <p>We modify the permissions of the file to only allow read and write to the owner.</p>
+                <img src="../img/nunchucks_template_injection/017.png" alt="Modify the permissions of the authorized_keys file." title="Modify the permissions of the authorized_keys file.">
+                <br>
+                <br>
+                <p>Finally, we can see that we have successfully logged into the target server using the private key.</p>
+                <img src="../img/nunchucks_template_injection/018.png" alt="Successfull SSH logon." title="Successfull SSH logon.">
+                <p>You can follow me on Twitter <a href="https://twitter.com/0xmaCyberSec">0xmaCyberSec</a>.</p>
+                <br>
+                <hr>
+                <br>                
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                        </ul>
+                    </div>
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>    
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>
