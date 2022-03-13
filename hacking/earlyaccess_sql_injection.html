@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SQL Injection - Example 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <meta name="description" content="This tutorial demonstrates how to perform a second order SQL injection.">
+        <meta name="keywords" content="kali, linux, kali linux, second order sql injection, sql injection">
+        <meta name="author" content="0xma">
+    </head>
+    <body>
+        <header class="header">
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">0xma</span>
+                    <span class="heading-primary-sub">Cyber Security Articles</span>
+                </h1>
+            </div>
+            <div class="nav_box">
+                <ul class="nav_ul">
+                    <li class="nav_li"><a href="https://twitter.com/0xmaCyberSec">About</a></li>
+                    <li class="nav_li"><a href="https://github.com/0xma/">GitHub</a></li>
+                    <li class="nav_li"><a href="index.html">Hacking Articles</a></li>
+                    <li class="nav_li"><a href="../index.html">Home</a></li>
+                </ul>    
+            </div>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="left_empty_space"></div>
+            <div class="center">
+                <p class="date">March 13, 2022</p>
+                <h1 class="heading">SQL Injection - Example 1</h1>
+                <p>In this tutorial, we will see how to perform a second order SQL injection and read the contents of the database. In a second order SQL injection, the attacker's input is injected into the database and is later used in a SQL query when a user accesses some other functionality of the same application.</p>
+                <p>The web application is running the snake game. Upon running the game, the scores are saved in the database.</p>
+                <img src="../img/earlyaccess_sql_injection/001.png" alt="Main page of the web application." title="Main page of the web application.">
+                <br>
+                <br>
+                <p>This shows the snake game.</p>
+                <img src="../img/earlyaccess_sql_injection/002.png" alt="The snake game." title="The snake game.">
+                <br>
+                <br>
+                <p>The "Scoreboard" page saves the best 10 scores of the user that is playing the game.</p>
+                <img src="../img/earlyaccess_sql_injection/003.png" alt="Scoreboard of the game." title="Scoreboard of the game.">
+                <br>
+                <br>
+                <p>The "Global Leaderboard" page displays the top 10 players.</p>
+                <img src="../img/earlyaccess_sql_injection/004.png" alt="Global Leaderboard of the game." title="Global Leaderboard of the game.">
+                <br>
+                <br>
+                <p>Now that we have an understanding of the web application, let's go to the profile of the current user.</p>
+                <img src="../img/earlyaccess_sql_injection/005.png" alt="Clicking on the profile link." title="Clicking on the profile link.">
+                <br>
+                <br>
+                <p>We can see that the name of the user is "0xma".</p>
+                <img src="../img/earlyaccess_sql_injection/006.png" alt="User profile page." title="User profile page.">
+                <br>
+                <br>
+                <p>Let's change it to "0xma'". We add a single quote after the name.</p>
+                <img src="../img/earlyaccess_sql_injection/007.png" alt="Modifying the username." title="Modifying the username.">
+                <br>
+                <br>
+                <p>After modifying the user name we see that the Scoreboard page shows a SQL syntax error.</p>
+                <img src="../img/earlyaccess_sql_injection/008.png" alt="SQL syntax error in the Scoreboard page." title="SQL syntax error in the Scoreboard page.">
+                <br>
+                <br>
+                <p>There is no effect in the Global Leaderboard page. Our SQL injection technique only affects the Scoreboard page.</p>
+                <img src="../img/earlyaccess_sql_injection/009.png" alt="Global Leaderboard page." title="Global Leaderboard page.">
+                <br>
+                <br>
+                <p>Now we close our SQL statement statement with "')" and comment out the rest of the SQL statement. The "-- -" means that it will not execute anything that comes after it.</p>
+                <img src="../img/earlyaccess_sql_injection/010.png" alt="SQL injection by commenting out." title="SQL injection by commenting out.">
+                <br>
+                <br>
+                <p>Now that we have commented out the rest of the SQL statement, we can see that the SQL syntax error is gone from the Scoreboard page.</p>
+                <img src="../img/earlyaccess_sql_injection/011.png" alt="Scoreboard page displays no output." title="Scoreboard page displays no output.">
+                <br>
+                <br>
+                <p>Next, we use the SQL <span class="command">UNION</span> operator to identify how many columns are displayed in the Scoreboard page and in which sections. This <a href="https://www.w3schools.com/sql/sql_union.asp">page</a> provides more information about the <span class="command">UNION</span> operator.</p>
+                <img src="../img/earlyaccess_sql_injection/012.png" alt="SQL UNION injection attack by displaying 1, 2, and 3." title="SQL UNION injection attack by displaying 1, 2, and 3.">
+                <br>
+                <br>
+                <p>We can see that all three integers (1, 2, and 3) are displayed in the page. It means using SQL injection, we can output the contents of the database in these three different sections.</p>
+                <img src="../img/earlyaccess_sql_injection/013.png" alt="Scoreboard displays 1, 2, and 3." title="Scoreboard displays 1, 2, and 3.">
+                <br>
+                <br>
+                <p>This statement prints out the database names (information_schema.tables) and the tables within those databases (table_name).</p>
+                <img src="../img/earlyaccess_sql_injection/014.png" alt="SQL injection to display table names and database names." title="SQL injection to display table names and database names.">
+                <br>
+                <br>
+                <p>We can see that the "Username" section contains the database names and the "Score" section contains the table names. We are interested in the "db" database which contains the following tables: failed_logins, scoreboard and users.</p>
+                <img src="../img/earlyaccess_sql_injection/015.png" alt="Scoreboard displays table names and database names." title="Scoreboard displays table names and database names.">
+                <br>
+                <br>
+                <p>This outputs the table names in the "Score" section and the column names in those tables in the "Time" section.</p>
+                <img src="../img/earlyaccess_sql_injection/016.png" alt="SQL injection to display table names and column names." title="SQL injection to display table names and column names.">
+                <br>
+                <br>
+                <img src="../img/earlyaccess_sql_injection/017.png" alt="SQL injection to display table names and column names." title="SQL injection to display table names and column names.">
+                <br>
+                <br>
+                <p>We are interested in the "users" table which contains important user information such as usernames and passwords. In the following screenshot we can see only three column names but there are other columns such as name and password.</p>
+                <img src="../img/earlyaccess_sql_injection/018.png" alt="Scoreboard displays the table names and column names." title="Scoreboard displays the table names and column names.">
+                <br>
+                <br>
+                <p>Using the following SQL statement we are extracting three columns (name, email, and password) from the "users" table.</p>
+                <img src="../img/earlyaccess_sql_injection/019.png" alt="SQL injection to display names, emails, and passwords." title="SQL injection to display names, emails, and passwords.">
+                <br>
+                <br>
+                <p>This displays the names, emails and password hashes.</p>
+                <img src="../img/earlyaccess_sql_injection/020.png" alt="Scoreboard displays the names, emails and password hashes." title="Scoreboard displays the names, emails and password hashes.">
+                <br>
+                <br>
+                <p>You can follow me on Twitter <a href="https://twitter.com/0xmaCyberSec">0xmaCyberSec</a>.</p>
+                <br>
+                <hr>
+                <br>                
+                <div class="bottom_links">
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Related Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_regular_shell_to_meterpreter_shell.html" class="widget_links">Escalate a Regular Shell to Meterpreter Shell</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/reading_outlook_pst_files.html" class="widget_links">Reading Outlook Files in Terminal</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/metasploit_privilege_escalation.html" class="widget_links">Escalating Privileges with Metasploit's Local Exploit Suggester</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/simple_powershell_wget_script.html" class="widget_links">Simple wget PowerShell Script</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/psexec_in_linux.html" class="widget_links">PsExec in Linux</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/eternal_blue_metasploit.html" class="widget_links">Eternal Blue Exploitation with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_1.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 1</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_eternalblue_with_custom_script_2.html" class="widget_links">Exploit EternalBlue with Custom Exploit - 2</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/local_privilege_escalation_on_linux_kernel.html" class="widget_links">Local Privilege Escalation on Linux Kernel < 4.4.0-116</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_firefox_profile_passwords.html" class="widget_links">Extract Passwords from Firefox Profile</a></li>
+                        </ul>
+                    </div>
+                    <div id="right_margin_widget">
+                        <div class="widget_title">Latest Tutorials</div>
+                        <hr>
+                        <ul class="remove_bullet_points">
+                            <li class="style_bullet_points"><a href="../hacking/escalate_privileges_via_pip.html" class="widget_links">Escalate Privileges via pip</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/modifying_etc_passwd_file.html" class="widget_links">Escalate Privileges by Modifying the /etc/passwd File</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/wpadmin_shell_upload.html" class="widget_links">wp_admin_shell_upload</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/extract_passwords_with_lazagne.html" class="widget_links">Extract Passwords with LaZagne</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_medusa.html" class="widget_links">Bruteforce Windows Server SMB Credentials with Medusa</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_hydra.html" class="widget_links">Brute Force Windows Server SMB Credentials with Hydra</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_2016_ncrack.html" class="widget_links">Brute Force Windows Server SMB Credentials with NCrack</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_crackmapexec.html" class="widget_links">Brute Force Windows Server SMB Credentials with CrackMapExec</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/brute_force_windows_server_metasploit.html" class="widget_links">Brute Force Windows Server SMB Credentials with Metasploit</a></li>
+                            <li class="style_bullet_points"><a href="../hacking/exploit_printnightmare.html" class="widget_links">Exploit PrintNightmare</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>    
+            </div>
+        </div>
+        <div class="right_empty_space"></div>
+        <footer>
+            <div class="footer">
+                <span class="copyright">Copyright &copy; 2022</span>
+            </div>
+        </footer>
+    </body>
+</html>
